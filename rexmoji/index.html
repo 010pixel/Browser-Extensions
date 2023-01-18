@@ -22,6 +22,32 @@
 
     gtag('config', 'G-4LKLD6MEMS');
   </script>
+  <script>
+    const getUrlParam = (name) => {
+      const params = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+      });
+      return params[name];
+    }
+    const appName = 'Rexmoji';
+    if(getUrlParam('page')) {
+      gtag('send', {
+        hitType: 'event',
+        eventCategory: appName,
+        eventAction: 'download',
+        eventLabel: 'version=' + getUrlParam('version'),
+        value: 1
+      });
+    } else if (getUrlParam('version')) {
+      gtag('send', {
+        hitType: 'event',
+        eventCategory: appName,
+        eventAction: 'update',
+        eventLabel: 'version=' + getUrlParam('version'),
+        value: 1
+      });
+    }
+  </script>
 </head>
 <body class="valign-wrapper">
   <div class="container">
