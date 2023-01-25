@@ -21,13 +21,30 @@
   <script type="text/javascript">
     // window.location.href="https://mutesync.github.io/easymute/";
   </script>
+  <script>
+    var browserName = (function() {
+      var test = function(regexp) {return regexp.test(window.navigator.userAgent)}
+      switch (true) {
+          case test(/edg/i): return "Microsoft Edge";
+          case test(/trident/i): return "Microsoft Internet Explorer";
+          case test(/firefox|fxios/i): return "Mozilla Firefox";
+          case test(/opr\//i): return "Opera";
+          case test(/ucbrowser/i): return "UC Browser";
+          case test(/samsungbrowser/i): return "Samsung Browser";
+          case test(/chrome|chromium|crios/i): return "Google Chrome";
+          case test(/safari/i): return "Apple Safari";
+          default: return "Other";
+      }
+      })();
+      
+      const affiliationName = ["Microsoft Edge", "Microsoft Internet Explorer"].includes(browserName) ? 'Edge Add-ons' : ["Mozilla Firefox"].includes(browserName) ? 'Mozilla Firefox Add-on' : 'Google Chrome Store';
+  </script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-4LKLD6MEMS"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-4LKLD6MEMS');
   </script>
   <script>
@@ -39,20 +56,32 @@
     }
     const appName = 'Easy Mute for Google Meet';
     if(getUrlParam('page')) {
-      gtag('send', {
-        hitType: 'event',
-        eventCategory: appName,
+      gtag('event', 'purchase', {
+        eventCategory: browserName,
         eventAction: 'download',
-        eventLabel: 'version=' + getUrlParam('version'),
-        value: 1
+        eventLabel: 'Download Extension',
+        value: 1,
+        items: [{
+          item_id: window.location.pathname.split('/')[1],
+          item_name: appName,
+          affiliation: affiliationName,
+          item_brand: browserName,
+          item_variant: 'version=' + getUrlParam('version'),
+        }]
       });
     } else if (getUrlParam('version')) {
-      gtag('send', {
-        hitType: 'event',
-        eventCategory: appName,
+      gtag('event', 'purchase', {
+        eventCategory: browserName,
         eventAction: 'update',
-        eventLabel: 'version=' + getUrlParam('version'),
-        value: 1
+        eventLabel: 'Update Extension',
+        value: 1,
+        items: [{
+          item_id: window.location.pathname.split('/')[1],
+          item_name: appName,
+          affiliation: affiliationName,
+          item_brand: browserName,
+          item_variant: 'version=' + getUrlParam('version'),
+        }]
       });
     }
   </script>
